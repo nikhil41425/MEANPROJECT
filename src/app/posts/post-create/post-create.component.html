@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Enter Title" [(ngModel)]="enteredTitle">
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput value="name" placeholder="Enter Content"  rows="10" [(ngModel)]="enteredContent"></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="onAddData()">Save Post</button>
+</mat-card>
+
+
+
