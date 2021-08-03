@@ -1,29 +1,35 @@
-import { Component, EventEmitter ,Output } from "@angular/core";
-
+import { Component, EventEmitter, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { PostService } from '../post-service/post.service';
+import { Post } from '../post.model';
 
 @Component({
-  selector:'app-post-create',
-  templateUrl:'./post-create.component.html',
-  styleUrls:['./post-create.component.css']
+  selector: 'app-post-create',
+  templateUrl: './post-create.component.html',
+  styleUrls: ['./post-create.component.css'],
 })
+export class PostCreateComponent {
+  enteredTitle = '';
+  enteredContent = '';
 
-export class PostCreateComponent{
+  //@Output() postCreated = new EventEmitter<Post>();
 
-  enteredTitle="";
-  enteredContent="";
+  constructor(public postService: PostService) {}
 
-  @Output() postCreated = new EventEmitter();
-
-  onAddData(){
-
-    const posts=
-      {
-      title:this.enteredTitle,
-      content:this.enteredContent
+  onAddData(form: NgForm) {
+    if (form.invalid) {
+      return;
     }
 
-    this.postCreated.emit(posts);
+    // const posts:Post=
+    //   {
+    //   title:form.value.title,
+    //   content:form.value.content
+    // }
 
+    // this.postCreated.emit(posts);
+    this.postService.addPost(form.value.title, form.value.content);
+    form.resetForm();
   }
 
   // myData="";
@@ -39,5 +45,4 @@ export class PostCreateComponent{
   //   this.newPost=this.myData;
   //   console.log(this.newPost);
   // }
-
 }
