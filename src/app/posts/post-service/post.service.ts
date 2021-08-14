@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Post } from '../post.model';
 import { map } from 'rxjs/operators';
-// import{map} from 'rxjs/operators';
-import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 @Injectable({ providedIn: 'root' })
 export class PostService {
@@ -15,19 +13,21 @@ export class PostService {
 
   getPosts() {
     this.http
-      .get<{ message: string; posts: any }>(
-        "http://localhost:3000/api/posts"
+      .get<{ message: string; posts: any }>('http://localhost:3000/api/posts')
+      .pipe(
+        map((postData) => {
+          return postData.posts.map(
+            (post: { title: any; content: any; _id: any }) => {
+              return {
+                title: post.title,
+                content: post.content,
+                id: post._id,
+              };
+            }
+          );
+        })
       )
-      .pipe(map((postData) => {
-        return postData.posts.map((post: { title: any; content: any; _id: any; }) => {
-          return {
-            title: post.title,
-            content: post.content,
-            id: post._id
-          };
-        });
-      }))
-      .subscribe(transformedPosts => {
+      .subscribe((transformedPosts) => {
         this.posts = transformedPosts;
         this.postUpdated.next([...this.posts]);
       });
@@ -38,10 +38,13 @@ export class PostService {
   }
 
   addPost(title: string, content: string) {
-    const post: Post = { id: "", title: title, content: content };
+    const post: Post = { id: '', title: title, content: content };
     this.http
-      .post<{ message: string, postId: string }>("http://localhost:3000/api/posts", post)
-      .subscribe(responseData => {
+      .post<{ message: string; postId: string }>(
+        'http://localhost:3000/api/posts',
+        post
+      )
+      .subscribe((responseData) => {
         const id = responseData.postId;
         post.id = id;
         this.posts.push(post);
@@ -50,15 +53,13 @@ export class PostService {
   }
 
   deletePost(postId: string) {
-    this.http.delete("http://localhost:3000/api/posts/" + postId)
+    this.http
+      .delete('http://localhost:3000/api/posts/' + postId)
       .subscribe(() => {
-        const updatedPosts = this.posts.filter(post => post.id !== postId);
+        const updatedPosts = this.posts.filter((post) => post.id !== postId);
         this.posts = updatedPosts;
         this.postUpdated.next([...this.posts]);
       });
   }
-
 }
-// function post(post: any, arg1: { title: any; content: any; id: any; }): import("rxjs").Observable<unknown> {
-//   throw new Error('Function not implemented.');
-// }
+
