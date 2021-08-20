@@ -5,3 +5,11 @@
 p {
   text-align: center;
 }
+h3{
+  font-style: initial;
+  font-weight: bold;
+}
+
+mat-spinner{
+  margin: auto;
+}

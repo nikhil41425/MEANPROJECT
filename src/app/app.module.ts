@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -33,6 +34,7 @@ import { PostListComponent } from './posts/post-list/post-list.component';
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
+    MatProgressSpinnerModule,
     MatExpansionModule,
     CdkAccordionModule,
     HttpClientModule
